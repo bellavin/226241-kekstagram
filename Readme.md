@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Дмитрий Беллавин](https://up.htmlacademy.ru/javascript/14/user/226241).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Зверобоев](https://htmlacademy.ru/profile/zveroboev)
 
 ---
 
