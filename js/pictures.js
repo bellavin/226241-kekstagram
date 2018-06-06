@@ -32,10 +32,9 @@
     var photosArr = [];
 
     for (var i = 0; i < numOfElements; i++) {
-      var photosId = i + 1;
       photosArr.push(
           {
-            url: 'photos/' + photosId + '.jpg',
+            url: 'photos/' + (i + 1) + '.jpg',
             likes: getRandomInt(15, 200), // 15, 200 взяты из ТЗ
             comments: COMMENTS[getRandomInt(0, COMMENTS.length - 1)],
             description: DESCRIPTIONS[getRandomInt(0, DESCRIPTIONS.length - 1)]
