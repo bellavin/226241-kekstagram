@@ -1,11 +1,7 @@
 'use strict';
 
 (function () {
-  var getRandomInt = function (min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }; // Спасибо Кантору за код
-
-  var comments = [
+  var COMMENTS = [
     'Всё отлично!',
     'В целом всё неплохо. Но не всё.',
     'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -14,7 +10,7 @@
     'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
   ];
 
-  var descriptions = [
+  var DESCRIPTIONS = [
     'Тестим новую камеру!',
     'Затусили с друзьями на море',
     'Как же круто тут кормят',
@@ -24,27 +20,36 @@
   ];
 
 
-  // Генерируем фотографии
-  var photos = [];
-
-  for (var i = 0; i < 25; i++) {
-    var photosId = i + 1;
-    photos.push(
-        {
-          url: 'photos/' + photosId + '.jpg',
-          likes: getRandomInt(15, 200),
-          comments: comments[getRandomInt(0, 5)],
-          description: descriptions[getRandomInt(0, 5)]
-        }
-    );
-  }
+  // Генератор случайных чисел
+  var getRandomInt = function (min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }; // Спасибо Кантору за код
 
 
-  // Отрисовываем фотографии
-  var pictureTemplate = document.querySelector('#picture').content;
-  var picturesListElement = document.querySelector('.pictures');
+  // Генератор массива фотографий
+  var getPhotosElements = function (numOfElements) {
+    numOfElements = numOfElements || 1;
+    var photosArr = [];
 
-  var renderPicture = function (picture) {
+    for (var i = 0; i < numOfElements; i++) {
+      var photosId = i + 1;
+      photosArr.push(
+          {
+            url: 'photos/' + photosId + '.jpg',
+            likes: getRandomInt(15, 200), // 15, 200 взяты из ТЗ
+            comments: COMMENTS[getRandomInt(0, COMMENTS.length - 1)],
+            description: DESCRIPTIONS[getRandomInt(0, DESCRIPTIONS.length - 1)]
+          }
+      );
+    }
+
+    return photosArr;
+  };
+
+
+  // Создаем DOM элементы
+  var getPictureElement = function (picture) {
+    var pictureTemplate = document.querySelector('#picture').content;
     var pictureElement = pictureTemplate.cloneNode(true);
 
     pictureElement.querySelector('.picture__img').src = picture.url;
@@ -54,46 +59,67 @@
     return pictureElement;
   };
 
-  var fragment = document.createDocumentFragment();
-  for (var j = 0; j < photos.length; j++) {
-    fragment.appendChild(renderPicture(photos[j]));
-  }
-  picturesListElement.appendChild(fragment);
+
+  // Отрисовываме DOM элементы на странице
+  var renderPictureElement = function (photos) {
+    var picturesListElement = document.querySelector('.pictures');
+    var fragment = document.createDocumentFragment();
+
+    for (var j = 0; j < photos.length; j++) {
+      fragment.appendChild(getPictureElement(photos[j]));
+    }
+
+    picturesListElement.appendChild(fragment);
+  };
 
 
   // Увеличенное изображение
-  var bigPicture = document.querySelector('.big-picture');
-  bigPicture.classList.remove('hidden');
-  bigPicture.querySelector('.big-picture__img img').src = photos[0].url; // Выбираем аватарку
-  bigPicture.querySelector('.likes-count').textContent = photos[0].likes; // Количество лайков
-  bigPicture.querySelector('.social__caption').textContent = photos[0].description; // Описание фотографии
+  var setupBigPicture = function () {
+    var bigPicture = document.querySelector('.big-picture');
+    bigPicture.classList.remove('hidden');
+    bigPicture.querySelector('.big-picture__img img').src = getPhotosElements()[0].url; // Выбираем аватарку
+    bigPicture.querySelector('.likes-count').textContent = getPhotosElements()[0].likes; // Количество лайков
+    bigPicture.querySelector('.social__caption').textContent = getPhotosElements()[0].description; // Описание фотографии
+  };
 
 
   // Добавляем комментарий
-  var pictureComments = bigPicture.querySelector('.social__comments');
-  var pictureComment = document.createElement('li');
-  pictureComment.classList.add('social__comment');
-  pictureComments.appendChild(pictureComment);
+  var appendComment = function () {
+    var pictureComments = document.querySelector('.social__comments');
+    var pictureComment = document.createElement('li');
+    pictureComment.classList.add('social__comment');
+    pictureComments.appendChild(pictureComment);
 
-  var pictureCommentImg = document.createElement('img');
-  pictureCommentImg.classList.add('social__picture');
-  pictureCommentImg.src = 'img/avatar-' + getRandomInt(1, 6) + '.svg';
-  pictureCommentImg.alt = 'Аватар комментатора фотографии';
-  pictureCommentImg.width = 35;
-  pictureCommentImg.height = 35;
-  pictureComment.appendChild(pictureCommentImg);
+    var pictureCommentImg = document.createElement('img');
+    pictureCommentImg.classList.add('social__picture');
+    pictureCommentImg.src = 'img/avatar-' + getRandomInt(1, 6) + '.svg';
+    pictureCommentImg.alt = 'Аватар комментатора фотографии';
+    pictureCommentImg.width = 35;
+    pictureCommentImg.height = 35;
+    pictureComment.appendChild(pictureCommentImg);
 
-  var pictureCommentText = document.createElement('p');
-  pictureCommentText.classList.add('social__text');
-  pictureCommentText.textContent = photos[0].comments;
-  pictureComment.appendChild(pictureCommentText);
-
-
-  // Количество комментариев
-  bigPicture.querySelector('.comments-count').textContent = bigPicture.querySelectorAll('.social__comment').length;
+    var pictureCommentText = document.createElement('p');
+    pictureCommentText.classList.add('social__text');
+    pictureCommentText.textContent = getPhotosElements()[0].comments;
+    pictureComment.appendChild(pictureCommentText);
+  };
 
 
-  // Прячем счетчик комментариев и загруску новых
-  bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
-  bigPicture.querySelector('.social__loadmore').classList.add('visually-hidden');
+  // Счетчик комментариев
+  var commentsCounter = function () {
+    document.querySelector('.comments-count').textContent = document.querySelectorAll('.social__comment').length;
+  };
+
+
+  // Прячем счетчик комментариев и загрузку новых
+  var commentsHidden = function () {
+    document.querySelector('.social__comment-count').classList.add('visually-hidden');
+    document.querySelector('.social__loadmore').classList.add('visually-hidden');
+  };
+
+  renderPictureElement(getPhotosElements(25)); // 25 взято из ТЗ
+  setupBigPicture();
+  appendComment();
+  commentsCounter();
+  commentsHidden();
 })();
