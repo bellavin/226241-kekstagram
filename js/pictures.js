@@ -19,6 +19,9 @@
     'Вот это тачка!'
   ];
 
+  var NUMBERS_OF_PHOTO_ELEMENTS = 25;
+  var MIN_LIKES = 15;
+  var MAX_LIKES = 200;
 
   // Генератор случайных чисел
   var getRandomInt = function (min, max) {
@@ -35,7 +38,7 @@
       photosArr.push(
           {
             url: 'photos/' + (i + 1) + '.jpg',
-            likes: getRandomInt(15, 200), // 15, 200 взяты из ТЗ
+            likes: getRandomInt(MIN_LIKES, MAX_LIKES),
             comments: COMMENTS[getRandomInt(0, COMMENTS.length - 1)],
             description: DESCRIPTIONS[getRandomInt(0, DESCRIPTIONS.length - 1)]
           }
@@ -116,7 +119,7 @@
     document.querySelector('.social__loadmore').classList.add('visually-hidden');
   };
 
-  renderPictureElement(getPhotosElements(25)); // 25 взято из ТЗ
+  renderPictureElement(getPhotosElements(NUMBERS_OF_PHOTO_ELEMENTS));
   setupBigPicture();
   appendComment();
   commentsCounter();
