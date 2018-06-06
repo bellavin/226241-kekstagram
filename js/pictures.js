@@ -61,14 +61,12 @@
   picturesListElement.appendChild(fragment);
 
 
-
   // Увеличенное изображение
   var bigPicture = document.querySelector('.big-picture');
   bigPicture.classList.remove('hidden');
   bigPicture.querySelector('.big-picture__img img').src = photos[0].url; // Выбираем аватарку
   bigPicture.querySelector('.likes-count').textContent = photos[0].likes; // Количество лайков
   bigPicture.querySelector('.social__caption').textContent = photos[0].description; // Описание фотографии
-
 
 
   // Добавляем комментарий
@@ -79,7 +77,7 @@
 
   var pictureCommentImg = document.createElement('img');
   pictureCommentImg.classList.add('social__picture');
-  pictureCommentImg.src = 'img/avatar-'+ getRandomInt(1, 6) + '.svg';
+  pictureCommentImg.src = 'img/avatar-' + getRandomInt(1, 6) + '.svg';
   pictureCommentImg.alt = 'Аватар комментатора фотографии';
   pictureCommentImg.width = 35;
   pictureCommentImg.height = 35;
@@ -89,7 +87,6 @@
   pictureCommentText.classList.add('social__text');
   pictureCommentText.textContent = photos[0].comments;
   pictureComment.appendChild(pictureCommentText);
-
 
 
   // Количество комментариев
