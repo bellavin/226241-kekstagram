@@ -1,6 +1,40 @@
 'use strict';
 
+
+/**
+ * РАНДОМАЙЗЕРЫ И ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+ */
 (function () {
+
+  // Генератор случайных чисел
+  window.getRandomInt = function (min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  // Перетряхиваем массив
+  window.shuffleArray = function (array) {
+    for (var i = array.length - 1; i > 0; i--) {
+      var j = window.getRandomInt(0, i);
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    return array;
+  };
+
+  // Обрезает массив до нужной длинны (в случае с кестаграммом, оставляет один или два элемента)
+  window.sliceArray = function (array, firstElement, lastElement) {
+    var arrayLength = window.getRandomInt(firstElement, lastElement);
+    return array.slice(0, arrayLength);
+  };
+})();
+
+
+/**
+ * ГЕНЕРАТОР СЛУЧАЙНЫХ ДАННЫХ
+ */
+(function () {
+
   var COMMENTS = [
     'Всё отлично!',
     'В целом всё неплохо. Но не всё.',
@@ -19,58 +53,44 @@
     'Вот это тачка!'
   ];
 
-  var NUMBERS_OF_PHOTO_ELEMENTS = 25;
+  var MIN_COMMENTS = 1; // Минимальное количество комментариев
+  var MAX_COMMENTS = 2; // Максимальное количество комментариев
 
-  var MIN_LIKES = 15;
-  var MAX_LIKES = 200;
-
-  var MIN_COMMENTS = 1;
-  var MAX_COMMENTS = 2;
+  var MIN_LIKES = 15; // Минимальное количество лайков
+  var MAX_LIKES = 200; // Максимальное количество лайков
 
 
-  // Рандомайзеры
-  // Генератор случайных чисел
-  var getRandomInt = function (min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
-
-  // Перетряхиваем массив
-  var shuffleArray = function (array) {
-    for (var i = array.length - 1; i > 0; i--) {
-      var j = getRandomInt(0, i);
-      var temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
-    return array;
-  };
-
-  // Генератор комментариев
-  var getRandomCommentsArray = function (array) {
-    return array.slice(0, getRandomInt(MIN_COMMENTS, MAX_COMMENTS));
-  };
-
-
-  // Фотографии на главной странице
   // Генератор массива фотографий
-  var getPhotosElements = function (numOfElements) {
-    numOfElements = numOfElements || 1;
-    var photosArray = [];
+  window.getPhotoElements = function (numOfElements) {
+    var photos = [];
+    numOfElements = numOfElements || 1; // Создаем заданное количество, в противном случае один элемент
+
+    var comments = window.shuffleArray(COMMENTS); // Перетряхиваем массив комментариев
+    var someOfComments = window.sliceArray(comments, MIN_COMMENTS, MAX_COMMENTS); // Забираем несколько из массива
+    var likes = window.getRandomInt(MIN_LIKES, MAX_LIKES); // Количество лайков
+    var descriptionIndex = window.getRandomInt(0, DESCRIPTIONS.length - 1); // Выбираем одно из описаний
+    var description = DESCRIPTIONS[descriptionIndex]; // Подставляем выбранное описание
 
     for (var i = 0; i < numOfElements; i++) {
-      photosArray[i] =
+      photos[i] =
         {
           url: 'photos/' + (i + 1) + '.jpg',
-          likes: getRandomInt(MIN_LIKES, MAX_LIKES),
-          comments: getRandomCommentsArray(shuffleArray(COMMENTS)),
-          description: DESCRIPTIONS[getRandomInt(0, DESCRIPTIONS.length - 1)]
+          likes: likes,
+          comments: someOfComments,
+          description: description
         };
     }
 
-    return photosArray;
+    return photos;
   };
 
+})();
+
+
+/**
+ * ОРИСОВКА ПРЕВЬЮ НА ГЛАВНОЙ СТРАНИЦЕ
+ */
+(function () {
 
   // Создаем DOM элементы
   var getPictureElement = function (picture) {
@@ -86,40 +106,56 @@
 
 
   // Отрисовываме DOM элементы на странице
-  var renderPictureElement = function (photos) {
+  window.renderPictureElement = function (photos) {
     var picturesListElement = document.querySelector('.pictures');
     var fragment = document.createDocumentFragment();
 
-    for (var j = 0; j < photos.length; j++) {
-      fragment.appendChild(getPictureElement(photos[j]));
+    for (var i = 0; i < photos.length; i++) {
+      fragment.appendChild(getPictureElement(photos[i]));
     }
 
     picturesListElement.appendChild(fragment);
   };
 
+})();
 
-  // Просмотр фотографий
-  // Увеличенное изображение
-  var setupBigPicture = function () {
-    var bigPicture = document.querySelector('.big-picture');
-    bigPicture.classList.remove('hidden');
-    bigPicture.querySelector('.big-picture__img img').src = getPhotosElements()[0].url; // Выбираем аватарку
-    bigPicture.querySelector('.likes-count').textContent = getPhotosElements()[0].likes; // Количество лайков
-    bigPicture.querySelector('.social__caption').textContent = getPhotosElements()[0].description; // Описание фотографии
+
+/**
+ * ПРОСМОТР ФОТОГРАФИЙ
+ */
+(function () {
+  var MIN_COMMENTS = 1; // Минимальное количество комментариев
+  var MAX_COMMENTS = 2; // Максимальное количество комментариев
+
+  var setupBigPicture = function (element) {
+    element.querySelector('.big-picture__img img').src = window.getPhotoElements()[0].url; // Выбираем аватарку
+    element.querySelector('.likes-count').textContent = window.getPhotoElements()[0].likes; // Количество лайков
+    element.querySelector('.social__caption').textContent = window.getPhotoElements()[0].description; // Описание фотографии
+    element.classList.remove('hidden');
+  };
+
+  // Удаляем старые комментарии
+  var removeOldComments = function (element) {
+    var pictureComments = element.querySelector('.social__comments');
+    var removedComments = element.querySelectorAll('.social__comment');
+    for (var i = 0; i < removedComments.length; i++) {
+      pictureComments.removeChild(removedComments[i]);
+    }
   };
 
 
   // Добавляем комментарий
-  var appendComment = function (numberOfElements) { // Аргумент - количество комментариев, которые будут вставлены
+  var appendComments = function (element, numberOfElements) { // Аргумент - количество комментариев, которые будут вставлены
     for (var i = 0; i < numberOfElements; i++) {
-      var pictureComments = document.querySelector('.social__comments');
+      var pictureComments = element.querySelector('.social__comments');
+
       var pictureComment = document.createElement('li');
       pictureComment.classList.add('social__comment');
       pictureComments.appendChild(pictureComment);
 
       var pictureCommentImg = document.createElement('img');
       pictureCommentImg.classList.add('social__picture');
-      pictureCommentImg.src = 'img/avatar-' + getRandomInt(1, 6) + '.svg';
+      pictureCommentImg.src = 'img/avatar-' + window.getRandomInt(1, 6) + '.svg';
       pictureCommentImg.alt = 'Аватар комментатора фотографии';
       pictureCommentImg.width = 35;
       pictureCommentImg.height = 35;
@@ -127,25 +163,38 @@
 
       var pictureCommentText = document.createElement('p');
       pictureCommentText.classList.add('social__text');
-      pictureCommentText.textContent = getPhotosElements()[0].comments;
+      pictureCommentText.textContent = window.getPhotoElements()[0].comments;
       pictureComment.appendChild(pictureCommentText);
     }
   };
 
 
   // Прячем счетчик комментариев и загрузку новых
-  var commentsHidden = function () {
-    document.querySelector('.social__comment-count').classList.add('visually-hidden');
-    document.querySelector('.social__loadmore').classList.add('visually-hidden');
+  var commentsHidden = function (element) {
+    var social = element.querySelector('.social');
+    social.querySelector('.social__comment-count').classList.add('visually-hidden');
+    social.querySelector('.social__loadmore').classList.add('visually-hidden');
   };
 
-  var renderBigPicture = function () { // Типо функция высшего порядка
-    setupBigPicture();
-    appendComment(getRandomInt(MIN_COMMENTS, MAX_COMMENTS));
-    commentsHidden();
+  window.renderBigPicture = function (element) {
+    var numberOfComments = window.getRandomInt(MIN_COMMENTS, MAX_COMMENTS);
+    setupBigPicture(element);
+    removeOldComments(element);
+    appendComments(element, numberOfComments);
+    commentsHidden(element);
   };
-
-  renderPictureElement(getPhotosElements(NUMBERS_OF_PHOTO_ELEMENTS));
-  renderBigPicture();
 
 })();
+
+
+/**
+ * ФУНКЦИИ ВЫСШЕГО ПОРЯДКА
+ */
+
+var NUMBER_OF_PHOTO_ELEMENTS = 25; // Количество превью фотографий на главной странице
+var PHOTO_ELEMENTS = window.getPhotoElements(NUMBER_OF_PHOTO_ELEMENTS); // Создаем сами элементы
+window.renderPictureElement(PHOTO_ELEMENTS);
+
+
+var BIG_PICTURE = document.querySelector('.big-picture');
+window.renderBigPicture(BIG_PICTURE);
