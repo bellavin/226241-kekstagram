@@ -65,13 +65,13 @@
     var photos = [];
     numOfElements = numOfElements || 1; // Создаем заданное количество, в противном случае один элемент
 
-    var comments = window.shuffleArray(COMMENTS); // Перетряхиваем массив комментариев
-    var someOfComments = window.sliceArray(comments, MIN_COMMENTS, MAX_COMMENTS); // Забираем несколько из массива
-    var likes = window.getRandomInt(MIN_LIKES, MAX_LIKES); // Количество лайков
-    var descriptionIndex = window.getRandomInt(0, DESCRIPTIONS.length - 1); // Выбираем одно из описаний
-    var description = DESCRIPTIONS[descriptionIndex]; // Подставляем выбранное описание
-
     for (var i = 0; i < numOfElements; i++) {
+      var comments = window.shuffleArray(COMMENTS); // Перетряхиваем массив комментариев
+      var someOfComments = window.sliceArray(comments, MIN_COMMENTS, MAX_COMMENTS); // Забираем несколько из массива
+      var likes = window.getRandomInt(MIN_LIKES, MAX_LIKES); // Количество лайков
+      var descriptionIndex = window.getRandomInt(0, DESCRIPTIONS.length - 1); // Выбираем одно из описаний
+      var description = DESCRIPTIONS[descriptionIndex]; // Подставляем выбранное описание
+
       photos[i] =
         {
           url: 'photos/' + (i + 1) + '.jpg',
@@ -88,7 +88,7 @@
 
 
 /**
- * ОРИСОВКА ПРЕВЬЮ НА ГЛАВНОЙ СТРАНИЦЕ
+ * ОтРИСОВКА ПРЕВЬЮ НА ГЛАВНОЙ СТРАНИЦЕ
  */
 (function () {
 
