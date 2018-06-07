@@ -20,32 +20,55 @@
   ];
 
   var NUMBERS_OF_PHOTO_ELEMENTS = 25;
+
   var MIN_LIKES = 15;
   var MAX_LIKES = 200;
 
+  var MIN_COMMENTS = 1;
+  var MAX_COMMENTS = 2;
+
+
+  // Рандомайзеры
   // Генератор случайных чисел
   var getRandomInt = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  }; // Спасибо Кантору за код
+  };
 
 
+  // Перетряхиваем массив
+  var shuffleArray = function (array) {
+    for (var i = array.length - 1; i > 0; i--) {
+      var j = getRandomInt(0, i);
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    return array;
+  };
+
+  // Генератор комментариев
+  var getRandomCommentsArray = function (array) {
+    return array.slice(0, getRandomInt(MIN_COMMENTS, MAX_COMMENTS));
+  };
+
+
+  // Фотографии на главной странице
   // Генератор массива фотографий
   var getPhotosElements = function (numOfElements) {
     numOfElements = numOfElements || 1;
-    var photosArr = [];
+    var photosArray = [];
 
     for (var i = 0; i < numOfElements; i++) {
-      photosArr.push(
-          {
-            url: 'photos/' + (i + 1) + '.jpg',
-            likes: getRandomInt(MIN_LIKES, MAX_LIKES),
-            comments: COMMENTS[getRandomInt(0, COMMENTS.length - 1)],
-            description: DESCRIPTIONS[getRandomInt(0, DESCRIPTIONS.length - 1)]
-          }
-      );
+      photosArray[i] =
+        {
+          url: 'photos/' + (i + 1) + '.jpg',
+          likes: getRandomInt(MIN_LIKES, MAX_LIKES),
+          comments: getRandomCommentsArray(shuffleArray(COMMENTS)),
+          description: DESCRIPTIONS[getRandomInt(0, DESCRIPTIONS.length - 1)]
+        };
     }
 
-    return photosArr;
+    return photosArray;
   };
 
 
@@ -56,7 +79,7 @@
 
     pictureElement.querySelector('.picture__img').src = picture.url;
     pictureElement.querySelector('.picture__stat--likes').textContent = picture.likes;
-    pictureElement.querySelector('.picture__stat--comments').textContent = picture.comments;
+    pictureElement.querySelector('.picture__stat--comments').textContent = picture.comments.length;
 
     return pictureElement;
   };
@@ -75,6 +98,7 @@
   };
 
 
+  // Просмотр фотографий
   // Увеличенное изображение
   var setupBigPicture = function () {
     var bigPicture = document.querySelector('.big-picture');
@@ -86,30 +110,26 @@
 
 
   // Добавляем комментарий
-  var appendComment = function () {
-    var pictureComments = document.querySelector('.social__comments');
-    var pictureComment = document.createElement('li');
-    pictureComment.classList.add('social__comment');
-    pictureComments.appendChild(pictureComment);
+  var appendComment = function (numberOfElements) { // Аргумент - количество комментариев, которые будут вставлены
+    for (var i = 0; i < numberOfElements; i++) {
+      var pictureComments = document.querySelector('.social__comments');
+      var pictureComment = document.createElement('li');
+      pictureComment.classList.add('social__comment');
+      pictureComments.appendChild(pictureComment);
 
-    var pictureCommentImg = document.createElement('img');
-    pictureCommentImg.classList.add('social__picture');
-    pictureCommentImg.src = 'img/avatar-' + getRandomInt(1, 6) + '.svg';
-    pictureCommentImg.alt = 'Аватар комментатора фотографии';
-    pictureCommentImg.width = 35;
-    pictureCommentImg.height = 35;
-    pictureComment.appendChild(pictureCommentImg);
+      var pictureCommentImg = document.createElement('img');
+      pictureCommentImg.classList.add('social__picture');
+      pictureCommentImg.src = 'img/avatar-' + getRandomInt(1, 6) + '.svg';
+      pictureCommentImg.alt = 'Аватар комментатора фотографии';
+      pictureCommentImg.width = 35;
+      pictureCommentImg.height = 35;
+      pictureComment.appendChild(pictureCommentImg);
 
-    var pictureCommentText = document.createElement('p');
-    pictureCommentText.classList.add('social__text');
-    pictureCommentText.textContent = getPhotosElements()[0].comments;
-    pictureComment.appendChild(pictureCommentText);
-  };
-
-
-  // Счетчик комментариев
-  var commentsCounter = function () {
-    document.querySelector('.comments-count').textContent = document.querySelectorAll('.social__comment').length;
+      var pictureCommentText = document.createElement('p');
+      pictureCommentText.classList.add('social__text');
+      pictureCommentText.textContent = getPhotosElements()[0].comments;
+      pictureComment.appendChild(pictureCommentText);
+    }
   };
 
 
@@ -119,9 +139,13 @@
     document.querySelector('.social__loadmore').classList.add('visually-hidden');
   };
 
+  var renderBigPicture = function () { // Типо функция высшего порядка
+    setupBigPicture();
+    appendComment(getRandomInt(MIN_COMMENTS, MAX_COMMENTS));
+    commentsHidden();
+  };
+
   renderPictureElement(getPhotosElements(NUMBERS_OF_PHOTO_ELEMENTS));
-  setupBigPicture();
-  appendComment();
-  commentsCounter();
-  commentsHidden();
+  renderBigPicture();
+
 })();
