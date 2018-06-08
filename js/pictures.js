@@ -65,8 +65,8 @@
     var photos = [];
 
     for (var i = 0; i < numOfElements; i++) {
-      var comments = window.shuffleArray(COMMENTS); // Перетряхиваем массив комментариев
-      var someOfComments = window.sliceArray(comments, MIN_COMMENTS, MAX_COMMENTS); // Забираем несколько из массива
+      var shuffledComments = window.shuffleArray(COMMENTS); // Перетряхиваем массив комментариев
+      var currentComments = window.sliceArray(shuffledComments, MIN_COMMENTS, MAX_COMMENTS); // Забираем несколько из массива
       var likes = window.getRandomInt(MIN_LIKES, MAX_LIKES); // Количество лайков
       var descriptionIndex = window.getRandomInt(0, DESCRIPTIONS.length - 1); // Выбираем одно из описаний
       var description = DESCRIPTIONS[descriptionIndex]; // Подставляем выбранное описание
@@ -75,7 +75,7 @@
         {
           url: 'photos/' + (i + 1) + '.jpg',
           likes: likes,
-          comments: someOfComments,
+          comments: currentComments,
           description: description
         };
     }
