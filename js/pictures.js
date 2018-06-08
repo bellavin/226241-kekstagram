@@ -88,7 +88,7 @@
 
 
 /**
- * ОтРИСОВКА ПРЕВЬЮ НА ГЛАВНОЙ СТРАНИЦЕ
+ * ОТРИСОВКА ПРЕВЬЮ НА ГЛАВНОЙ СТРАНИЦЕ
  */
 (function () {
 
@@ -106,12 +106,12 @@
 
 
   // Отрисовываме DOM элементы на странице
-  window.renderPictureElement = function (photos) {
+  window.renderPictureElement = function (pictures) {
     var picturesListElement = document.querySelector('.pictures');
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < photos.length; i++) {
-      fragment.appendChild(getPictureElement(photos[i]));
+    for (var i = 0; i < pictures.length; i++) {
+      fragment.appendChild(getPictureElement(pictures[i]));
     }
 
     picturesListElement.appendChild(fragment);
@@ -124,20 +124,19 @@
  * ПРОСМОТР ФОТОГРАФИЙ
  */
 (function () {
-  var MIN_COMMENTS = 1; // Минимальное количество комментариев
-  var MAX_COMMENTS = 2; // Максимальное количество комментариев
+  var BIG_PICTURE = document.querySelector('.big-picture');
 
-  var setupBigPicture = function (element) {
-    element.querySelector('.big-picture__img img').src = window.getPhotoElements()[0].url; // Выбираем аватарку
-    element.querySelector('.likes-count').textContent = window.getPhotoElements()[0].likes; // Количество лайков
-    element.querySelector('.social__caption').textContent = window.getPhotoElements()[0].description; // Описание фотографии
-    element.classList.remove('hidden');
+  var setupBigPicture = function (data) {
+    BIG_PICTURE.querySelector('.big-picture__img img').src = data.url; // Выбираем аватарку
+    BIG_PICTURE.querySelector('.likes-count').textContent = data.likes; // Количество лайков
+    BIG_PICTURE.querySelector('.social__caption').textContent = data.description; // Описание фотографии
+    BIG_PICTURE.classList.remove('hidden');
   };
 
   // Удаляем старые комментарии
-  var removeOldComments = function (element) {
-    var pictureComments = element.querySelector('.social__comments');
-    var removedComments = element.querySelectorAll('.social__comment');
+  var removeOldComments = function () {
+    var pictureComments = BIG_PICTURE.querySelector('.social__comments');
+    var removedComments = BIG_PICTURE.querySelectorAll('.social__comment');
     for (var i = 0; i < removedComments.length; i++) {
       pictureComments.removeChild(removedComments[i]);
     }
@@ -145,9 +144,9 @@
 
 
   // Добавляем комментарий
-  var appendComments = function (element, numberOfElements) { // Аргумент - количество комментариев, которые будут вставлены
-    for (var i = 0; i < numberOfElements; i++) {
-      var pictureComments = element.querySelector('.social__comments');
+  var appendComments = function (data) { // Аргумент - количество комментариев, которые будут вставлены
+    for (var i = 0; i < data.comments.length; i++) {
+      var pictureComments = BIG_PICTURE.querySelector('.social__comments');
 
       var pictureComment = document.createElement('li');
       pictureComment.classList.add('social__comment');
@@ -163,25 +162,25 @@
 
       var pictureCommentText = document.createElement('p');
       pictureCommentText.classList.add('social__text');
-      pictureCommentText.textContent = window.getPhotoElements()[0].comments;
+      pictureCommentText.textContent = data.comments;
       pictureComment.appendChild(pictureCommentText);
     }
   };
 
 
   // Прячем счетчик комментариев и загрузку новых
-  var commentsHidden = function (element) {
-    var social = element.querySelector('.social');
+  var commentsHidden = function () {
+    var social = BIG_PICTURE.querySelector('.social');
     social.querySelector('.social__comment-count').classList.add('visually-hidden');
     social.querySelector('.social__loadmore').classList.add('visually-hidden');
   };
 
-  window.renderBigPicture = function (element) {
-    var numberOfComments = window.getRandomInt(MIN_COMMENTS, MAX_COMMENTS);
-    setupBigPicture(element);
-    removeOldComments(element);
-    appendComments(element, numberOfComments);
-    commentsHidden(element);
+  window.renderBigPicture = function (dataArray) {
+    var CURRENT = dataArray[0];
+    setupBigPicture(CURRENT);
+    removeOldComments();
+    appendComments(CURRENT);
+    commentsHidden();
   };
 
 })();
@@ -193,8 +192,6 @@
 
 var NUMBER_OF_PHOTO_ELEMENTS = 25; // Количество превью фотографий на главной странице
 var PHOTO_ELEMENTS = window.getPhotoElements(NUMBER_OF_PHOTO_ELEMENTS); // Создаем сами элементы
+
 window.renderPictureElement(PHOTO_ELEMENTS);
-
-
-var BIG_PICTURE = document.querySelector('.big-picture');
-window.renderBigPicture(BIG_PICTURE);
+window.renderBigPicture(PHOTO_ELEMENTS);
