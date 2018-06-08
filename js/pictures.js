@@ -5,11 +5,11 @@
  * РАНДОМАЙЗЕРЫ И ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
  */
 (function () {
-
   // Генератор случайных чисел
   window.getRandomInt = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
+
 
   // Перетряхиваем массив
   window.shuffleArray = function (array) {
@@ -21,6 +21,7 @@
     }
     return array;
   };
+
 
   // Обрезает массив до нужной длинны (в случае с кестаграммом, оставляет один или два элемента)
   window.sliceArray = function (array, firstElement, lastElement) {
@@ -34,7 +35,6 @@
  * ГЕНЕРАТОР СЛУЧАЙНЫХ ДАННЫХ
  */
 (function () {
-
   var COMMENTS = [
     'Всё отлично!',
     'В целом всё неплохо. Но не всё.',
@@ -63,7 +63,6 @@
   // Генератор массива фотографий
   window.getPhotoElements = function (numOfElements) {
     var photos = [];
-    numOfElements = numOfElements || 1; // Создаем заданное количество, в противном случае один элемент
 
     for (var i = 0; i < numOfElements; i++) {
       var comments = window.shuffleArray(COMMENTS); // Перетряхиваем массив комментариев
@@ -83,7 +82,6 @@
 
     return photos;
   };
-
 })();
 
 
@@ -91,7 +89,6 @@
  * ОТРИСОВКА ПРЕВЬЮ НА ГЛАВНОЙ СТРАНИЦЕ
  */
 (function () {
-
   // Создаем DOM элементы
   var getPictureElement = function (picture) {
     var pictureTemplate = document.querySelector('#picture').content;
@@ -116,7 +113,6 @@
 
     picturesListElement.appendChild(fragment);
   };
-
 })();
 
 
@@ -126,12 +122,15 @@
 (function () {
   var BIG_PICTURE = document.querySelector('.big-picture');
 
+
+  // Разворачиваем полную версию фотографии с комментариями и описанием
   var setupBigPicture = function (data) {
     BIG_PICTURE.querySelector('.big-picture__img img').src = data.url; // Выбираем аватарку
     BIG_PICTURE.querySelector('.likes-count').textContent = data.likes; // Количество лайков
     BIG_PICTURE.querySelector('.social__caption').textContent = data.description; // Описание фотографии
     BIG_PICTURE.classList.remove('hidden');
   };
+
 
   // Удаляем старые комментарии
   var removeOldComments = function () {
@@ -143,8 +142,8 @@
   };
 
 
-  // Добавляем комментарий
-  var appendComments = function (data) { // Аргумент - количество комментариев, которые будут вставлены
+  // Добавляем комментарии
+  var appendComments = function (data) {
     for (var i = 0; i < data.comments.length; i++) {
       var pictureComments = BIG_PICTURE.querySelector('.social__comments');
 
@@ -162,7 +161,7 @@
 
       var pictureCommentText = document.createElement('p');
       pictureCommentText.classList.add('social__text');
-      pictureCommentText.textContent = data.comments;
+      pictureCommentText.textContent = data.comments[i];
       pictureComment.appendChild(pictureCommentText);
     }
   };
@@ -175,14 +174,15 @@
     social.querySelector('.social__loadmore').classList.add('visually-hidden');
   };
 
-  window.renderBigPicture = function (dataArray) {
-    var CURRENT = dataArray[0];
+
+  // Отрисовываем полную версию фотографии с комментариями
+  window.renderBigPicture = function (data) {
+    var CURRENT = data[0];
     setupBigPicture(CURRENT);
     removeOldComments();
     appendComments(CURRENT);
     commentsHidden();
   };
-
 })();
 
 
