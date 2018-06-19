@@ -22,6 +22,9 @@
     var closePopup = function () {
       popup.classList.add('hidden');
       document.removeEventListener('keydown', onPopupEscPress);
+      if (eventName === 'change') {
+        openBtn.value = '';
+      }
     };
 
     openBtn.addEventListener(eventName, function () {
