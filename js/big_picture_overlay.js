@@ -1,4 +1,4 @@
-// Просмотр фотографий
+// Генерация увеличенного изображения
 
 /**
  * 1)
@@ -13,19 +13,11 @@
   var bigPicture = document.querySelector('.big-picture');
   var social = bigPicture.querySelector('.social');
 
-  // var picturePreview = document.querySelector('.picture__link');
-  // var closeBigPicture = document.querySelector('.big-picture__cancel');
-
-  // window.popupEvents(bigPicture, picturePreview, closeBigPicture, 'click');
-  // console.log(bigPicture, picturePreview, closeBigPicture);
-
-
   // Разворачиваем полную версию фотографии с комментариями и описанием
   var setupBigPicture = function (data) {
     bigPicture.querySelector('.big-picture__img img').src = data.url; // Выбираем аватарку
     bigPicture.querySelector('.likes-count').textContent = data.likes; // Количество лайков
     bigPicture.querySelector('.social__caption').textContent = data.description; // Описание фотографии
-    bigPicture.classList.remove('hidden');
   };
 
 
@@ -42,7 +34,7 @@
   // Добавляем комментарии
   var appendComments = function (data) {
     for (var i = 0; i < data.comments.length; i++) {
-      var pictureComments = bigPicture.querySelector('.social__comments');
+      var pictureComments = social.querySelector('.social__comments');
 
       var pictureComment = document.createElement('li');
       pictureComment.classList.add('social__comment');
@@ -69,6 +61,7 @@
     social.querySelector('.social__comment-count').classList.add('visually-hidden');
     social.querySelector('.social__loadmore').classList.add('visually-hidden');
   };
+
 
   // Отрисовываем полную версию фотографии с комментариями
   window.renderBigPicture = function (data) {
