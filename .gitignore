@@ -9,3 +9,4 @@ build/
 node_modules/
 npm-debug.log*
 Thumbs.db
+js/big_picture_previews_rand_data
