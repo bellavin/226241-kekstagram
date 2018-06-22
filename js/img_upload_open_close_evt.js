@@ -10,7 +10,9 @@
 
   var onPopupEscPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
-      closePopup();
+      if (!evt.target.classList.contains('text__hashtags') && !evt.target.classList.contains('text__description')) {
+        closePopup();
+      }
     }
   };
 
