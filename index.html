@@ -111,7 +111,7 @@
 
                 <fieldset class="img-upload__text text">
                   <input class="text__hashtags" name="hashtags" placeholder="#хэш-тег">
-                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..." maxlength="5"></textarea>
+                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..." maxlength="140"></textarea>
                 </fieldset>
 
                 <button type="submit" class="img-upload__submit" id="upload-submit">Опубликовать</button>
@@ -207,26 +207,17 @@
     </div>
   </template>
 
+  <script src="js/randomizers.js"></script>
+  <script src="js/random_data_generator.js"></script>
+  <script src="js/previews_generator.js"></script>
+  <script src="js/big_picture.js"></script>
+  <script src="js/show_popup.js"></script>
+  <script src="js/previews_and_big_picture_rendering.js"></script>
 
-<script src="js/img_upload_filters.js"></script>
-<script src="js/img_upload_resize.js"></script>
-<script src="js/img_upload_open_close_evt.js"></script>
-<script src="js/img_upload_validator.js"></script>
-
-<!-- <script src="js/randomizer.js"></script>
-<script src="js/generate_rand_data.js"></script>
-
-<script src="js/generate_picture_previews.js"></script>
-
-<script src="js/close_and_open_popup_events.js"></script>
-
-<script src="js/big_picture_overlay.js"></script>
-<script src="js/render_previews_and_big_picture.js"></script>
-
-<script src="js/upload_overlay.js"></script>
-<script src="js/resize_upload_overlay.js"></script>
-
-<script src="js/pictures.js"></script> -->
-
+  <script src="js/show_popup.js"></script>
+  <script src="js/img_upload_validator.js"></script>
+  <script src="js/img_upload_filter.js"></script>
+  <script src="js/img_upload_resize.js"></script>
+  <script src="js/img_upload.js"></script>
 </body>
 </html>
