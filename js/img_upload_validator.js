@@ -17,18 +17,6 @@
     ];
 
 
-    var testUnique = function (array) {
-      for (var i = 0; i < array.length - 1; i++) {
-        for (var j = i + 1; j < array.length; j++) {
-          if (array[i].toLowerCase() === array[j].toLowerCase()) {
-            return false;
-          }
-        }
-      }
-      return true;
-    };
-
-
     hashtag.addEventListener('input', function (evt) {
       var hashtags = evt.target.value.split(' ');
       var flag = true;
@@ -36,7 +24,7 @@
       if (hashtags.length > 5) {
         hashtag.setCustomValidity('Слишком много хештегов');
         flag = false;
-      } else if (!testUnique(hashtags)) {
+      } else if (!window.testUnique(hashtags)) {
         hashtag.setCustomValidity('Хештеги повторяются');
         flag = false;
       } else {
