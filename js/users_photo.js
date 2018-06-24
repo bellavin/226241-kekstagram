@@ -1,10 +1,3 @@
-// Отрисовка превью на главной странице
-
-/**
- * 1) Создаем DOM элементы
- * 2) Отрисовываeм DOM элементы на странице
- */
-
 'use strict';
 
 (function () {
@@ -20,7 +13,25 @@
   };
 
 
-  window.renderPicturePreviews = function (pictures) {
+  var getBigPicture = function (picture) {
+    var bigPicture = document.querySelector('.big-picture');
+    var previews = document.querySelectorAll('.picture__link');
+    var closeBigPicture = document.querySelector('.big-picture__cancel');
+
+    var addClickListener = function (elem, num) {
+      elem.addEventListener('click', function () {
+        window.renderBigPicture(picture[num]);
+      });
+    };
+
+    for (var i = 0; i < previews.length; i++) {
+      addClickListener(previews[i], i);
+      window.showPopup(bigPicture, previews[i], closeBigPicture, 'click');
+    }
+  };
+
+
+  var onSuccessLoad = function (pictures) {
     var picturesListElement = document.querySelector('.pictures');
     var fragment = document.createDocumentFragment();
 
@@ -29,5 +40,11 @@
     }
 
     picturesListElement.appendChild(fragment);
+    getBigPicture(pictures);
   };
+
+  var onErrorLoad = function () {};
+
+
+  window.load(onSuccessLoad, onErrorLoad);
 })();

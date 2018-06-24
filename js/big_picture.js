@@ -19,7 +19,8 @@
   };
 
   var appendComments = function (data) {
-    for (var i = 0; i < data.comments.length; i++) {
+    var commetntCounter = data.comments.length > 5 ? 5 : data.comments.length;
+    for (var i = 0; i < commetntCounter; i++) {
       var pictureComments = social.querySelector('.social__comments');
 
       var pictureComment = document.createElement('li');

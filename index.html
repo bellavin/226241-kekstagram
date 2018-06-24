@@ -30,7 +30,7 @@
         <div class="img-upload__wrapper">
           <h2 class="img-upload__title visually-hidden">Загрузка фотографии</h2>
 
-          <form class="img-upload__form" id="upload-select-image" method="post" enctype="multipart/form-data" autocomplete="off">
+          <form class="img-upload__form" id="upload-select-image" method="post" enctype="multipart/form-data" action="https://js.dump.academy/kekstagram" autocomplete="off">
 
             <fieldset class="img-upload__start">
               <input type="file" id="upload-file" class="img-upload__input visually-hidden" name="filename" required>
@@ -208,13 +208,12 @@
   </template>
 
   <script src="js/service_functions.js"></script>
+  <script src="js/backend.js"></script>
   <script src="js/random_data_generator.js"></script>
-  <script src="js/previews_generator.js"></script>
+  <script src="js/show_popup.js"></script>
   <script src="js/big_picture.js"></script>
-  <script src="js/show_popup.js"></script>
-  <script src="js/previews_and_big_picture_rendering.js"></script>
+  <script src="js/users_photo.js"></script>
 
-  <script src="js/show_popup.js"></script>
   <script src="js/img_upload_validator.js"></script>
   <script src="js/img_upload_filter.js"></script>
   <script src="js/img_upload_resize.js"></script>

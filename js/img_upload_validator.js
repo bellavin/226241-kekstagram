@@ -45,7 +45,7 @@
         }
       }
 
-      if (flag) {
+      if (flag || hashtags[0] === '') {
         hashtag.setCustomValidity('');
       }
     });
@@ -58,5 +58,10 @@
         description.setCustomValidity('');
       }
     });
+
+    window.resetPopupText = function () {
+      hashtag.value = '';
+      description.value = '';
+    };
   };
 })();
