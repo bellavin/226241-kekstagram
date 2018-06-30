@@ -114,7 +114,6 @@
           heat: 'brightness(' + (scaleValue.value / 33.3).toFixed(2) + ')'
         };
 
-        var overlayPreview = document.querySelector('.img-upload__preview');
         changeFilter(overlayPreview, Filters);
       };
 
