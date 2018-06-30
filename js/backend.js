@@ -4,7 +4,6 @@
   var URL_LOAD = 'https://js.dump.academy/kekstagram/data';
   var URL_UPLOAD = 'https://js.dump.academy/kekstagram';
 
-
   window.load = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
