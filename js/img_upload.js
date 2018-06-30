@@ -22,15 +22,28 @@
   window.imgUploadValidate(overlay);
   window.imgUploadResize(overlay, overlayPreview);
   window.imgUploadFilter(overlay, overlayPreview);
+  window.showPopup(overlay, uploadFile, overlayClose, 'change', resetValue);
+
+  var onSuccessUpload = function () {
+    overlay.classList.add('hidden');
+    resetValue();
+  };
+
+  var onErrorUpload = function () {
+    overlay.classList.add('hidden');
+
+    var templatesContainer = document.querySelector('#picture').content;
+    var errorMessageTemplate = templatesContainer.querySelector('.img-upload__message--error');
+    var errorMessage = errorMessageTemplate.cloneNode(true);
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(errorMessage);
+    imgUpload.appendChild(fragment);
+    errorMessage.classList.remove('hidden');
+  };
 
 
   form.addEventListener('submit', function (evt) {
-    window.upload(new FormData(form), function () {
-      overlay.classList.add('hidden');
-      resetValue();
-    });
+    window.upload(new FormData(form), onSuccessUpload, onErrorUpload);
     evt.preventDefault();
   });
-
-  window.showPopup(overlay, uploadFile, overlayClose, 'change', resetValue);
 })();

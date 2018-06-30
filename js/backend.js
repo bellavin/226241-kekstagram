@@ -22,19 +22,30 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000; // 10s
+    xhr.timeout = 10000;
 
     xhr.open('GET', URL_LOAD);
     xhr.send();
   };
 
-  window.upload = function (data, onSuccess) {
+
+  window.upload = function (data, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       onSuccess(xhr.response);
     });
+
+    xhr.addEventListener('error', function () {
+      onError();
+    });
+
+    xhr.addEventListener('timeout', function () {
+      onError();
+    });
+
+    xhr.timeout = 10000;
 
     xhr.open('POST', URL_UPLOAD);
     xhr.send(data);

@@ -14,6 +14,25 @@
     }
     if (effect.value === 'none') {
       scale.classList.add('hidden');
+      preview.style.filter = '';
+    }
+  };
+
+  window.changeFilter = function (preview, filter) {
+    if (preview.classList.contains('effects__preview--chrome')) {
+      preview.style.filter = filter.chrome;
+    }
+    if (preview.classList.contains('effects__preview--sepia')) {
+      preview.style.filter = filter.sepia;
+    }
+    if (preview.classList.contains('effects__preview--marvin')) {
+      preview.style.filter = filter.marvin;
+    }
+    if (preview.classList.contains('effects__preview--phobos')) {
+      preview.style.filter = filter.phobos;
+    }
+    if (preview.classList.contains('effects__preview--heat')) {
+      preview.style.filter = filter.heat;
     }
   };
 
@@ -31,6 +50,7 @@
       effect.addEventListener('click', function () {
         checkFilter(overlayPreview, effect);
         showHideScale(overlayPreview, effect, scale);
+        window.changeFilter(overlayPreview, window.Filters);
       });
     };
 
@@ -38,7 +58,6 @@
       var effect = effects[i];
       addClickListener(effect);
     }
-
 
     window.resetPopupFilter = function () {
       checkFilter(overlayPreview, checkedEffect);

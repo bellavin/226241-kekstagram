@@ -2,7 +2,8 @@
 
 (function () {
   var getPictureElement = function (picture) {
-    var pictureTemplate = document.querySelector('#picture').content;
+    var templatesContainer = document.querySelector('#picture').content;
+    var pictureTemplate = templatesContainer.querySelector('.picture__link');
     var pictureElement = pictureTemplate.cloneNode(true);
 
     pictureElement.querySelector('.picture__img').src = picture.url;
@@ -43,7 +44,21 @@
     getBigPicture(pictures);
   };
 
-  var onErrorLoad = function () {};
+  var onErrorLoad = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: #028dc0;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.paddingTop = '5px';
+    node.style.paddingBottom = '5px';
+    node.style.color = '#eee';
+    node.style.fontSize = '15px';
+    node.style.textTransform = 'none';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
 
 
   window.load(onSuccessLoad, onErrorLoad);
