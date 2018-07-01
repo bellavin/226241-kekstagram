@@ -43,7 +43,8 @@
 
 
   form.addEventListener('submit', function (evt) {
-    window.upload(new FormData(form), onSuccessUpload, onErrorUpload);
     evt.preventDefault();
+
+    window.upload(new FormData(form), onSuccessUpload, onErrorUpload);
   });
 })();
