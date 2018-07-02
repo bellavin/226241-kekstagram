@@ -42,18 +42,23 @@
     window.renderPictureElements(filteredPictures);
   };
 
+  var DEBOUNCE_INTERVAL = 500;
+  var onFiltersButtonClick = window.debounce(function (filter) {
+    updatePictureElements(window.pictures, filter);
+  }, DEBOUNCE_INTERVAL);
 
-  var onFiltersButtonClick = function (elem) {
+
+  var addFiltersButtonListener = function (elem) {
     elem.addEventListener('click', function () {
       var imgFiltersActiveButton = imgFilters.querySelector('.img-filters__button--active');
       imgFiltersActiveButton.classList.remove('img-filters__button--active');
-
       elem.classList.add('img-filters__button--active');
 
-      updatePictureElements(window.pictures, elem.id);
+      onFiltersButtonClick(elem.id);
     });
   };
+
   imgButtons.forEach(function (btn) {
-    onFiltersButtonClick(btn);
+    addFiltersButtonListener(btn);
   });
 })();
