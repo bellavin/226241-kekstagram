@@ -29,6 +29,10 @@
     resetValue();
   };
 
+  var handleError = function () {
+
+  };
+
   var onErrorUpload = function () {
     overlay.classList.add('hidden');
 
@@ -39,6 +43,14 @@
     fragment.appendChild(errorMessage);
     imgUpload.appendChild(fragment);
     errorMessage.classList.remove('hidden');
+
+
+    var errorLinks = errorMessage.querySelectorAll('.error__link');
+    errorLinks.forEach(function (link) {
+      link.addEventListener('click', function () {
+        window.location.reload();
+      });
+    });
   };
 
 
