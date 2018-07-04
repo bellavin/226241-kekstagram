@@ -29,10 +29,6 @@
     resetValue();
   };
 
-  var handleError = function () {
-
-  };
-
   var onErrorUpload = function () {
     overlay.classList.add('hidden');
 
