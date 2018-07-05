@@ -2,10 +2,14 @@
 
 (function () {
   window.pictures = [];
+
+
   var onSuccessLoad = function (data) {
     window.renderPictureElements(data);
     window.pictures = data;
   };
+
+
   var onErrorLoad = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: #028dc0;';
@@ -21,5 +25,7 @@
 
     document.body.insertAdjacentElement('afterbegin', node);
   };
+
+
   window.load(onSuccessLoad, onErrorLoad);
 })();

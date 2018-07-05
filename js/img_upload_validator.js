@@ -1,20 +1,21 @@
 'use strict';
 
 (function () {
+  var MIN_HASHTAG_LENGTH = 2;
+  var MAX_HASHTAG_LENGTH = 20;
+  var HASHTAG_NUM = [
+    'Первый',
+    'Второй',
+    'Третий',
+    'Четвертый',
+    'Пятый'
+  ];
+
+
   window.imgUploadValidate = function (overlay) {
     var imgUploadText = overlay.querySelector('.img-upload__text');
     var hashtag = imgUploadText.querySelector('.text__hashtags');
     var description = imgUploadText.querySelector('.text__description');
-
-    var MIN_HASHTAG_LENGTH = 2;
-    var MAX_HASHTAG_LENGTH = 20;
-    var HASHTAG_NUM = [
-      'Первый',
-      'Второй',
-      'Третий',
-      'Четвертый',
-      'Пятый'
-    ];
 
 
     hashtag.addEventListener('input', function (evt) {
