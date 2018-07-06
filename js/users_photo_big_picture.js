@@ -22,8 +22,9 @@
     },
 
     appendComments: function (data) {
-      var commetntCounter = data.comments.length > 5 ? 5 : data.comments.length;
-      for (var i = 0; i < commetntCounter; i++) {
+      var commentCounter = data.comments.length > 5 ? 5 : data.comments.length;
+
+      data.comments.some(function (comment, index) {
         var pictureComments = social.querySelector('.social__comments');
 
         var pictureComment = document.createElement('li');
@@ -40,9 +41,11 @@
 
         var pictureCommentText = document.createElement('p');
         pictureCommentText.classList.add('social__text');
-        pictureCommentText.textContent = data.comments[i];
+        pictureCommentText.textContent = comment;
         pictureComment.appendChild(pictureCommentText);
-      }
+
+        return index >= commentCounter - 1;
+      });
     },
 
     commentsHidden: function () {

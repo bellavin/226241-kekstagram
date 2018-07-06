@@ -29,21 +29,18 @@
         hashtag.setCustomValidity('Хештеги повторяются');
         flag = false;
       } else {
-        for (var i = 0; i < hashtags.length; i++) {
-          if (hashtags[i][0] !== '#') {
-            hashtag.setCustomValidity(HASHTAG_NUM[i] + ' хештег должен начинатся с символа решетки "#"');
+        hashtags.forEach(function (elem, index) {
+          if (elem[0] !== '#') {
+            hashtag.setCustomValidity(HASHTAG_NUM[index] + ' хештег должен начинатся с символа решетки "#"');
             flag = false;
-            break;
-          } else if (hashtags[i].length < MIN_HASHTAG_LENGTH) {
-            hashtag.setCustomValidity(HASHTAG_NUM[i] + ' хештег должeн состоять минимум из ' + MIN_HASHTAG_LENGTH + '-х символов');
+          } else if (elem.length < MIN_HASHTAG_LENGTH) {
+            hashtag.setCustomValidity(HASHTAG_NUM[index] + ' хештег должeн состоять минимум из ' + MIN_HASHTAG_LENGTH + '-х символов');
             flag = false;
-            break;
-          } else if (hashtags[i].length > MAX_HASHTAG_LENGTH) {
-            hashtag.setCustomValidity(HASHTAG_NUM[i] + ' хештег слишком длиный. Максимальная длина ' + MAX_HASHTAG_LENGTH + ' символов');
+          } else if (elem.length > MAX_HASHTAG_LENGTH) {
+            hashtag.setCustomValidity(HASHTAG_NUM[index] + ' хештег слишком длиный. Максимальная длина ' + MAX_HASHTAG_LENGTH + ' символов');
             flag = false;
-            break;
           }
-        }
+        });
       }
 
       if (flag || hashtags[0] === '') {

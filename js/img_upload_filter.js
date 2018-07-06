@@ -72,10 +72,9 @@
       });
     };
 
-    for (var i = 0; i < effects.length; i++) {
-      var effect = effects[i];
+    effects.forEach(function (effect) {
       addClickListener(effect);
-    }
+    });
 
 
     scalePin.addEventListener('mousedown', function (evt) {
