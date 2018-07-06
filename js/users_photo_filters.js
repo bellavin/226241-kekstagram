@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var DEBOUNCE_INTERVAL = 500;
+
+
   var imgFilters = document.querySelector('.img-filters');
   var imgButtons = imgFilters.querySelectorAll('.img-filters__button');
   imgFilters.classList.remove('img-filters--inactive');
@@ -42,7 +45,6 @@
     window.renderPictureElements(filteredPictures);
   };
 
-  var DEBOUNCE_INTERVAL = 500;
   var onFiltersButtonClick = window.debounce(function (filter) {
     updatePictureElements(window.pictures, filter);
   }, DEBOUNCE_INTERVAL);
